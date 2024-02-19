@@ -1,7 +1,6 @@
 import './App.css';
 import * as Setup from './setup/setup'
 import { Core } from './core/core';
-import ReactMatrixTable from '@paraboly/react-matrix-table';
 
 function App() {
   const core = new Core(Setup.A, Setup.I, Setup.J, Setup.K);
@@ -18,29 +17,29 @@ function App() {
     'Vk'
   ]
 
-  const rows = core.g.map((_, index) => index.toString())
-
   const data = []
 
   for (let k = 0; k < Setup.K; k++) {
-    data.push([
-      k + 1,
-      core.M[k].index + 1,
-      ...core.g[k],
-      core.M[k].value,
-      ...core.h[k],
-      core.V[k].index + 1,
-      core.V[k].value
-    ])
+    const record: {[key: string]: any} = {
+      k: k + 1,
+      Jk: core.M[k].index + 1,
+      Mk: core.M[k].value,
+      Ik: core.V[k].index + 1,
+      Vk: core.V[k].value
+    }
+
+    for (let j = 0; j < core.g[k].length; j++) {
+      record[`g${j}`] = core.g[k][j]
+      record[`h${j}`] = core.h[k][j]
+    }
+
+    data.push(record)
   }
+
+  console.table(data, columns)
 
   return (
     <div className="App">
-        <ReactMatrixTable
-          rows={rows}
-          columns={columns}
-          data={data}
-        />
     </div>
   );
 }

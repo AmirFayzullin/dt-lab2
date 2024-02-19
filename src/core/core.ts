@@ -60,8 +60,6 @@ export class Core {
             
             this.V.push({...vMax, value: vMax.value/(k+1)})
         }
-
-        console.log(this.g, this.h, this.M, this.V)
     }
 
     private getMin(arr: number[]): MinMaxResult {
